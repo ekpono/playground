@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    \App\Jobs\UpdateFounders::dispatch();
-    return view('welcome');
+    return response()->json([
+       'founders' => \App\Models\Founder::all()
+    ]);
+});
+
+Route::get('/delete', function () {
+    $founders = \App\Models\Founder::all();
+    foreach($founders as $founder) {
+        $founder->destroy($founder->id);
+    }
+    return response()->json([
+        'founders' => \App\Models\Founder::all()
+    ]);
 });
